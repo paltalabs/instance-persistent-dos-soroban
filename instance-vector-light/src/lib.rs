@@ -21,9 +21,12 @@ impl InstanceVectorLightContract {
         env.storage().instance().set(&VECTOR, &vector);
     }
 
-    pub fn get_vector(env: Env) -> Vec<Address>{
-        env.storage().instance()
-        .get(&VECTOR).unwrap_or(Vec::new(&env))
+    pub fn get_address(env: Env, n: u32) -> Address{
+        let vector = env.storage().instance()
+        .get(&VECTOR).unwrap_or(Vec::new(&env));
+
+        vector.get(n).unwrap()
+
     }
 }
 
