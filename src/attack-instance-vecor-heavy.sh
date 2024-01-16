@@ -8,13 +8,13 @@ bash /workspace/src/setup.sh $1
 
 # COMPILE
 echo "Compile pair contract"
-cd /workspace/instance-vector-light/
+cd /workspace/instance-vector-heavy/
 make build
 
 #DEPLOY
 
 ARGS="--network $NETWORK --source admin"
-CONTRACT_WASM="/workspace/instance-vector-light/target/wasm32-unknown-unknown/release/instance_vector_light.wasm"
+CONTRACT_WASM="/workspace/instance-vector-heavy/target/wasm32-unknown-unknown/release/instance_vector_heavy.wasm"
 
 CONTRACT_ID="$(
   soroban contract deploy $ARGS \

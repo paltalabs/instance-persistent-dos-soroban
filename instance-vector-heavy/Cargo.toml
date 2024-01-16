@@ -1,5 +1,5 @@
 [package]
-name = "instance-vector-light"
+name = "instance-vector-heavy"
 version = "0.0.0"
 authors = ["Esteban (@esteblock) from PaltaLabs"]
 license = "Apache-2.0"
