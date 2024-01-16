@@ -4,17 +4,21 @@ NC='\033[0m'
 
 ## SETUP
 NETWORK="$1"
+CONTRACT="$2"
 bash /workspace/src/setup.sh $1
+
+echo "We will attack the $2 contract"
+transformed_name_for_wasm=$(echo "$2" | tr '-' '_')
 
 # COMPILE
 echo "Compile pair contract"
-cd /workspace/instance-vector-light/
+cd /workspace/$2/
 make build
 
 #DEPLOY
 
 ARGS="--network $NETWORK --source admin"
-CONTRACT_WASM="/workspace/instance-vector-light/target/wasm32-unknown-unknown/release/instance_vector_light.wasm"
+CONTRACT_WASM="/workspace/$2/target/wasm32-unknown-unknown/release/$transformed_name_for_wasm.wasm"
 
 CONTRACT_ID="$(
   soroban contract deploy $ARGS \

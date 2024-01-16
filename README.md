@@ -15,7 +15,7 @@ make test
 
 2.- Do a DoS attack to the contract and check how many entries does the contract support:
 ```bash
-bash src/attack-instance-vecor-light.sh standalone
+bash src/attack.sh standalone instance-vector-light
 ```
 After 1653 pushs I get a `ResourceLimitExceeded` error.
 Check the [Attack_1_Error_Message.md](Attack_1_Error_Message.md) for the complete error message
@@ -44,8 +44,10 @@ If we think that from the 65kb, 63464 bytes are occupied by the contract, this m
 Let's check:
 
 ```bash
-bash src/attack-instance-vecor-heavy.sh standalone
+bash src/attack.sh standalone instance-vecor-heavy
+
 ```
+
 
 # Situation 3: Persistent, vector, heavy
 In this case, the vector is stored in a persisent storage, we exepct that even if the contract is very heavy, it can be attacked.
