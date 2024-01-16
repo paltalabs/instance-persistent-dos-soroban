@@ -20,7 +20,7 @@ bash src/attack.sh standalone instance-vector-light
 After 1653 pushs I get a `ResourceLimitExceeded` error.
 Check the [Attack_1_Error_Message.md](Attack_1_Error_Message.md) for the complete error message
 
-By doing `ls -alh instance-vector-light/target/wasm32-unknown-unknown/release/instance_vector_light.wasm ` we get that the contract is 734 bytes. Which is around 0,717 kb. We can guess that each push increases the storage in around (66560-734)/1653 = 39,822 bytes
+By doing `ls -alh instance-vector-light/target/wasm32-unknown-unknown/release/instance_vector_light.wasm ` we get that the contract is 734 bytes. We can guess that each push increases the storage in around (64*1024-734)/1653 = 39,2 bytes... It does makes a bit of sense, due that Stellar Addresses are of 32 bytes.. and we can think that the rest is metadata?
 
 # Situation 2: Instance, vector, heavy
 This contract stores information in a **vector** that increases in using **instance** type of storage. But the contract is **very light**.
@@ -35,18 +35,21 @@ ls -al target/wasm32-unknown-unknown/release/instance_vector_heavy.wasm
 
 You'll get something like:
 ```bash
--rwxr-xr-x 2 root root 63464 Jan 16 21:49 target/wasm32-unknown-unknown/release/instance_vector_heavy.wasm
+-rwxr-xr-x 2 root root 65194 Jan 16 23:02 target/wasm32-unknown-unknown/release/instance_vector_heavy.wasm
 ```
 
 So. How the attack changes?
-If we think that from the 65kb, 63464 bytes are occupied by the contract, this means that we have 3096 bytes left. Because we know that each push increases the storage in around 39,822 bytes we can expect that this will fail after 3096/39,822 = 77,7 calls.
+If we think that from the 64kb = 65536 bytes, 65194 bytes are occupied by the contract, this means that we have 342 bytes left. Because we know that each push increases the storage in around 39,2 bytes we can expect that this will fail after around 10 pushes??
 
 Let's check:
 
 ```bash
-bash src/attack.sh standalone instance-vecor-heavy
+bash src/attack.sh standalone instance-vector-heavy
 
 ```
+Oh, It fails after 1637 pushes!
+
+Why?
 
 
 # Situation 3: Persistent, vector, heavy
