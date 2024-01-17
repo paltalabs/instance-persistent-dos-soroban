@@ -1,6 +1,6 @@
 #![cfg(test)]
 
-use super::{PersistentVariableDataKeyHeavyContract, PersistentVariableDataKeyHeavyContractClient};
+use super::{InstanceVectorLightContract, InstanceVectorLightContractClient};
 use soroban_sdk::{Env};
 
 extern crate std;
@@ -8,8 +8,8 @@ extern crate std;
 #[test]
 fn test() {
     let env = Env::default();
-    let contract_id = env.register_contract(None, PersistentVariableDataKeyHeavyContract);
-    let client = PersistentVariableDataKeyHeavyContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, InstanceVectorLightContract);
+    let client = InstanceVectorLightContractClient::new(&env, &contract_id);
 
     client.increment_a();
     assert_eq!(client.get_address_a(&0), client.address.clone());
