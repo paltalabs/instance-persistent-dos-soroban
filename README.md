@@ -14,6 +14,8 @@ client.increment_b();
 assert_eq!(client.get_address_b(&0), client.address.clone());
 ```
 
+However, depending on how we program this, the contract can be attacked using DoS :O
+
 What we know:
 
 Instance: The amount of data that can be stored in the instance storage is limited by the ledger entry size. [Source](https://docs.rs/soroban-sdk/latest/soroban_sdk/storage/struct.Storage.html#method.instance)
@@ -96,8 +98,22 @@ cd /workspace
 bash src/attack.sh standalone persistent-vector-heavy
 ```
 
-And voilà!!! The contract fails endeed when each vector reaches a total amount of.
-You can see the complete error message in [error-persistent-vector-heavy](persistent-vector-heavy)
+And voilà!!! The contract fails endeed when after the vector reaches a total amount of 1636 pushes.
+You can see the complete error message in [error-persistent-vector-heavy.md](error-persistent-vector-heavy.md)
 
 # Situation 4: DoS free: Use a Variable DataKey
-In this situation, we avoid the usage of a vector. Instead we'll use a variable DataKey, that will receive a number as an argument. So you can do the same calls:
+In this situation, we avoid the usage of a vector. Instead we'll use a variable DataKey, that will receive a number as an argument. So you can do the same calls, but every time, the Address gets stored in a different persistent storage slot. And the contract do not have a limit of amounts of different persistent storage to store.
+
+```rust
+pub enum DataKey {
+    StoredAddressesA(u32),
+    StoredAddressesB(u32),
+}
+...
+env.storage().persistent().set(&DataKey::StoredAddressesA(count), &env.current_contract_address().clone());
+```
+
+Let the attack run during the night! 
+```bash
+bash src/attack.sh standalone persistent-variable-datakey-heavy
+```

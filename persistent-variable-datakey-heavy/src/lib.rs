@@ -1,11 +1,13 @@
 #![no_std]
 use soroban_sdk::{contract,contracttype, contractimpl, symbol_short, Env, Symbol, Address, String};
 
-const COUNTER: Symbol = symbol_short!("COUNTER");
+const COUNTER_A: Symbol = symbol_short!("COUNTER_A");
+const COUNTER_B: Symbol = symbol_short!("COUNTER_B");
 
 #[contracttype]
 pub enum DataKey {
-    StoredAddresses(u32),
+    StoredAddressesA(u32),
+    StoredAddressesB(u32),
 }
 
 #[contract]
@@ -14,18 +16,32 @@ pub struct PersistentVariableDataKeyHeavyContract;
 #[contractimpl]
 
 impl PersistentVariableDataKeyHeavyContract {
-    pub fn increment(env: Env) {
-        let mut count: u32 = env.storage().instance().get(&COUNTER).unwrap_or(0); // If no value set, assume 0.
-        count += 1;
-        env.storage().instance().set(&COUNTER, &count);
+    pub fn increment_a(env: Env) {
+        let mut count: u32 = env.storage().instance().get(&COUNTER_A).unwrap_or(0); // If no value set, assume 0.
         // Save the updated vector to persistent storage
-        env.storage().persistent().set(&DataKey::StoredAddresses(count), &env.current_contract_address().clone());
+        env.storage().persistent().set(&DataKey::StoredAddressesA(count), &env.current_contract_address().clone());
+        
+        count += 1;
+        env.storage().instance().set(&COUNTER_A, &count);
     }
 
-    pub fn get_address(env: Env, n: u32) -> Address{
+    pub fn increment_b(env: Env) {
+        let mut count: u32 = env.storage().instance().get(&COUNTER_B).unwrap_or(0); // If no value set, assume 0.
+        // Save the updated vector to persistent storage
+        env.storage().persistent().set(&DataKey::StoredAddressesB(count), &env.current_contract_address().clone());
+        
+        count += 1;
+        env.storage().instance().set(&COUNTER_B, &count);
+    }
 
+    pub fn get_address_a(env: Env, n: u32) -> Address{
         env.storage().persistent()
-        .get(&DataKey::StoredAddresses(n)).unwrap()
+        .get(&DataKey::StoredAddressesA(n)).unwrap()
+    }
+
+    pub fn get_address_b(env: Env, n: u32) -> Address{
+        env.storage().persistent()
+        .get(&DataKey::StoredAddressesB(n)).unwrap()
     }
 
     pub fn get_lorem_ipsum(env: Env) -> String{
