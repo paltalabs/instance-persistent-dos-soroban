@@ -63,7 +63,7 @@ currentDir=$(pwd)
 docker run -dti \
   --volume ${currentDir}:/workspace \
   --name soroban-preview-${previewVersion} \
-  -p 8001:8000 \
+  -p 8011:8000 \
   --ipc=host \
   --network soroban-network \
   esteblock/soroban-preview:${previewVersion}
@@ -76,7 +76,7 @@ echo "5. Run a stellar quickstart container"
 docker run --rm -ti \
   --name stellar \
   --network soroban-network \
-  -p 8000:8000 \
+  -p 8010:8000 \
   stellar/quickstart:${quickstartHash} \
   $ARGS \
   --enable-soroban-rpc \

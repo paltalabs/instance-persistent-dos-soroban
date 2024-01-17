@@ -33,12 +33,26 @@ echo -e "${RED} ====== ${NC}"
 
 for ((j=i+1; j<999999999; j++)); do
 
-        echo -e "${GREEN} Pushing the vector $j ${NC}"
+        echo -e "${GREEN} Pushing the vector $j ${NC} to VECTOR A"
         RESPONSE=$(soroban contract invoke \
         $ARGS \
         --id $CONTRACT_ID \
         -- \
-        increment)
+        increment_a 2>&1) ## To capture the message
+
+        if [ -n "$RESPONSE" ]; then
+            echo "Contract invocation failed with the following message: $RESPONSE"
+            break
+        else
+        echo "Contract invocation successful. No error message received."
+        fi
+
+        echo -e "${GREEN} Pushing the vector $j ${NC} to VECTOR B"
+        RESPONSE=$(soroban contract invoke \
+        $ARGS \
+        --id $CONTRACT_ID \
+        -- \
+        increment_b 2>&1) ## To capture the message
 
         if [ -n "$RESPONSE" ]; then
             echo "Contract invocation failed with the following message: $RESPONSE"
