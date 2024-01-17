@@ -61,6 +61,11 @@ if !(soroban config identity ls | grep admin 2>&1 >/dev/null); then
   soroban config identity generate admin
 fi
 
+echo Fund token-admin account from friendbot
+echo This will fail if the account already exists, but it\' still be fine.
+ADMIN_ADDRESS="$(soroban config identity address admin)"
+curl  -X POST "$FRIENDBOT_URL?addr=$ADMIN_ADDRESS"
+
 echo "   "
 echo " "
 echo -e "${RED} ====== ${NC}"
