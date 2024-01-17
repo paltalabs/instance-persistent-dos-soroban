@@ -1,8 +1,27 @@
 # instance-persistent-dos-soroban
 A Repo to replicate a DoS situation when using instance or persistent storage wih Vectors or Mappings in Soroban
 
+In this repo we will have 4 ways of writing a similar smart contract. From an external point of view, these smart contracts might be the same. Indeed, we wrote the exact same test for all of them!
+
+```rust
+client.increment_a();
+assert_eq!(client.get_address_a(&0), client.address.clone());
+
+client.increment_a();
+assert_eq!(client.get_address_a(&1), client.address.clone());
+
+client.increment_b();
+assert_eq!(client.get_address_b(&0), client.address.clone());
+```
+
+What we know:
+
+Instance: The amount of data that can be stored in the instance storage is limited by the ledger entry size. [Source](https://docs.rs/soroban-sdk/latest/soroban_sdk/storage/struct.Storage.html#method.instance)
+Instance: All instance storage is stored in **a single contract instance LedgerEntry** and shares a single TTL [Source](https://soroban.stellar.org/docs/soroban-internals/state-archival)
+Ledger Entry Size: 64kb [Source](https://soroban.stellar.org/docs/soroban-internals/fees-and-metering#resource-limits)
+
 # Situation 1: Instance, vector, light
-This contract stores information in a **vector** that increases in using **instance** type of storage. But the contract is very light.
+This contract stores information in **two vector** using **instance** type of storage. Both of the vectors increase in size. But the contract is very light.
 
 1.- Check and test the contract
 ```bash
@@ -17,10 +36,15 @@ make test
 ```bash
 bash src/attack.sh standalone instance-vector-light
 ```
-After 1653 pushs I get a `ResourceLimitExceeded` error.
-Check the [Attack_1_Error_Message.md](Attack_1_Error_Message.md) for the complete error message
 
-By doing `ls -alh instance-vector-light/target/wasm32-unknown-unknown/release/instance_vector_light.wasm ` we get that the contract is 734 bytes. We can guess that each push increases the storage in around (64*1024-734)/1653 = 39,2 bytes... It does makes a bit of sense, due that Stellar Addresses are of 32 bytes.. and we can think that the rest is metadata?
+After 818 push calls of vector A and 818 push calls of vector B, we have a `ResourceLimitExceeded` error.
+Check the [error-instance-vector-light.md](error-instance-vector-light.md) for the complete error message.
+
+By doing `ls -alh instance-vector-light/target/wasm32-unknown-unknown/release/instance_vector_light.wasm ` we get that the contract is 987 bytes.
+
+As we will see in the next Situation, the contract size does not matter, as all the instances type of storages are stored **in a single contract instance LedgerEntry**. And we can prove that this LedgerEntry is independent of the contract size!
+
+Because we managed to store 818*2 = 1636 times a 32bytes address. This means that we managed to store a total amount of 52352 bytes. The LedgerEntry should be of 64kb... what about the rest of the 13184 bytes = 12,8kb?
 
 # Situation 2: Instance, vector, heavy
 This contract stores information in a **vector** that increases in using **instance** type of storage. But the contract is **very light**.
@@ -38,20 +62,42 @@ You'll get something like:
 -rwxr-xr-x 2 root root 65194 Jan 16 23:02 target/wasm32-unknown-unknown/release/instance_vector_heavy.wasm
 ```
 
-So. How the attack changes?
-If we think that from the 64kb = 65536 bytes, 65194 bytes are occupied by the contract, this means that we have 342 bytes left. Because we know that each push increases the storage in around 39,2 bytes we can expect that this will fail after around 10 pushes??
-
+Does the attack changes? No it doesn't
 Let's check:
 
 ```bash
 bash src/attack.sh standalone instance-vector-heavy
 
 ```
-Oh, It fails after 1637 pushes!
+If you see the [error-instance-vector-heavy.md](error-instance-vector-heavy.md) error file, you'll see that we managed to store the same amount of information, regardless of the size of the contract!
 
-Why?
+This proves that the instance LedgerEntry is independent of the contract size!
 
+But again... why **only** 1636 pushes of a 32 bytes address? 
 
 # Situation 3: Persistent, vector, heavy
-In this case, the vector is stored in a persisent storage, we exepct that even if the contract is very heavy, it can be attacked.
-This will happen when the vector will reach a total of 65kb, and we expect it to be similar as the Situation 1, where the contract was very light
+
+In this case, these two vectors will use a persistent storage. So we expect that each of this vector will have the capacity to store up to 64kb of information. We expect the contract to fail when a vector reaches 1636 pushes. We continue using a heavy contract.
+
+Let's try:
+
+```bash
+bash quickstart.sh standalone # if you haven't done this before
+bash run.sh # if you haven't done this before
+cd persistent-vector-heavy
+make build
+make test
+
+```
+
+Let's attack:
+```bash
+cd /workspace
+bash src/attack.sh standalone persistent-vector-heavy
+```
+
+And voilà!!! The contract fails endeed when each vector reaches a total amount of.
+You can see the complete error message in [error-persistent-vector-heavy](persistent-vector-heavy)
+
+# Situation 4: DoS free: Use a Variable DataKey
+In this situation, we avoid the usage of a vector. Instead we'll use a variable DataKey, that will receive a number as an argument. So you can do the same calls:
