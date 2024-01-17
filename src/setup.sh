@@ -10,7 +10,7 @@ NETWORK="$1"
 
 # If soroban-cli is called inside the soroban-preview docker containter,
 # it can call the stellar standalone container just using its name "stellar"
-SOROBAN_RPC_HOST="http://stellar:8000"
+SOROBAN_RPC_HOST="http://stellar-dos:8000"
 SOROBAN_RPC_URL="$SOROBAN_RPC_HOST/soroban/rpc"
 
 case "$1" in
