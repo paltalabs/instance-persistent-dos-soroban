@@ -25,13 +25,15 @@ CONTRACT_ID="$(
     --wasm $CONTRACT_WASM
 )"
 echo -e "${GREEN} The contract was deployed with ADDRESS: $CONTRACT_ID . ${NC}"
+echo $CONTRACT_ID > /workspace/.contract_id
+
 echo " "
 echo " "
 echo -e "${RED} ====== ${NC}"
 
 # ATTACK
 
-for ((j=i+1; j<999999999; j++)); do
+for ((j=1; j<999999999; j++)); do
 
         echo -e "${GREEN} Pushing the vector $j ${NC} to VECTOR A"
         RESPONSE=$(soroban contract invoke \
@@ -45,6 +47,15 @@ for ((j=i+1; j<999999999; j++)); do
             break
         else
         echo "Contract invocation successful. No error message received."
+
+        ## Simulate the costs
+
+        yarn --silent ts-node /workspace/src/simulateTransaction.ts increment_a
+        echo "              .."
+        j_minus_1=$((j - 1))
+        yarn --silent ts-node /workspace/src/simulateTransaction.ts get_address_a $j_minus_1
+
+
         fi
 
         echo -e "${GREEN} Pushing the vector $j ${NC} to VECTOR B"
@@ -59,5 +70,13 @@ for ((j=i+1; j<999999999; j++)); do
             break
         else
         echo "Contract invocation successful. No error message received."
+
+        ## Simulate the costs
+
+        yarn --silent ts-node /workspace/src/simulateTransaction.ts increment_b
+        echo "              .."
+        j_minus_1=$((j - 1))
+        yarn --silent ts-node /workspace/src/simulateTransaction.ts get_address_b $j_minus_1
+
         fi
 done
