@@ -114,7 +114,7 @@ And voilà!!! The contract fails endeed when after one vector reaches a total am
 You can see the complete error message in [error-persistent-vector-heavy.md](error-persistent-vector-heavy.md)
 
 
-**Costs simulations:** From [cost-persistent-vector-heavy.md](cost-persistent-vector-heavy.md) we can see that increasing the amount of storage used by persistent storage DO NOT increases the cost of reading a "non related function"! This s great!
+**Costs simulations persistent-vector-heavy:** From [cost-persistent-vector-heavy.md](cost-persistent-vector-heavy.md) we can see that increasing the amount of storage used by persistent storage DO NOT increases the cost of reading a "non related function"! This s great!
 However, as expected, increasing the size of the vector makes that calling a function that interacts with this vector to increase in cost. See the result doc!!!
 
 # Situation 4: DoS free: Use a Variable DataKey
@@ -137,3 +137,6 @@ bash src/attack.sh standalone persistent-variable-datakey-heavy
 I ran this script for a bit than a night, and I managed to reach 16700 
 
 
+
+**Costs simulations using variable data key:** From [cost-persistent-variable-datakey-heavy.md](cost-persistent-variable-datakey-heavy.md) we can see that with this technique we DONT increase any of the costs! However in the frist 2 pushes, we will set up the COUNTER_A and COUNTER_B instances variables, but after these, all cost remains the same! This is our best design scenario.
+We don't increase the cost of reading, because what we are reading won't increase in value... it will just be an address in an independent storage space. And won't increase the cost of reading a "non related" function as we are using persistent storage
