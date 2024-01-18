@@ -3,5 +3,6 @@
 */test_snapshots
 .soroban
 /node_modules
-
+.admin_private_key
+.admin_public_key
 

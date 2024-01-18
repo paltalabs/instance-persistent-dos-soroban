@@ -69,6 +69,9 @@ echo " == "
 echo "ADMIN_PUBLIC_KEY: $ADMIN_PUBLIC_KEY"
 echo "ADMIN_PRIVATE_KEY: $ADMIN_PRIVATE_KEY"
 
+echo $ADMIN_PUBLIC_KEY > .admin_public_key
+echo $ADMIN_PRIVATE_KEY > .admin_private_key
+
 echo Fund token-admin account from friendbot
 echo This will fail if the account already exists, but it\' still be fine.
 curl  -X POST "$FRIENDBOT_URL?addr=$ADMIN_PUBLIC_KEY"
