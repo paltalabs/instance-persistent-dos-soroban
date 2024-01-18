@@ -1,6 +1,7 @@
 import * as StellarSdk from "stellar-sdk";
 let serverUrl="http://stellar-dos:8000/soroban/rpc"
 let publicKey="GDJEE7X32JZ36GSAZ36RHM2LV6K6YQD4R4GHYXGNYJHNJ3UR6IBIL3HD"
+let sourceSecretKey = "SB7SHJQOH6DKPLIJ456RU6JALUKEUU2TCT2EHF2WDTZ2MI73G6DZKQUL";
 let networkPassphrase = StellarSdk.Networks.STANDALONE;
 
 async function main() {
@@ -27,58 +28,24 @@ async function main() {
       .build();
     
     const preparedTransaction = await server.prepareTransaction(transaction);
-    console.log("🚀 ~ main ~ preparedTransaction:", preparedTransaction)
+    // console.log("🚀 ~ main ~ preparedTransaction:", preparedTransaction)
     
     // // Sign this transaction with the secret key
     // // NOTE: signing is transaction is network specific. Test network transactions
     // // won't work in the public network. To switch networks, use the Network object
     // // as explained above (look for StellarSdk.Network).
-    // const sourceSecretKey = "SAUHH63AQVK6KP4QMF6IILS7SWC7NXULN4X5CJEV763DQ7GY227ZG7JD";
-    // const sourceKeypair = StellarSdk.Keypair.fromSecret(sourceSecretKey);
-    // const simulatedTransaction = await server.simulateTransaction(preparedTransaction);
+    const sourceKeypair = StellarSdk.Keypair.fromSecret(sourceSecretKey);
+    const simulatedTransaction = await server.simulateTransaction(preparedTransaction);
 
-    // console.log("simulatedTransaction:");
-    // console.log(simulatedTransaction);
-    
-    // console.log("simulatedTransaction.transactionData:");
-    // type simulatedTransactionKey = keyof typeof simulatedTransaction;
-    // const transactionDataVar = 'transactionData' as simulatedTransactionKey;
-    // const transactionData = simulatedTransaction[transactionDataVar];
-    // console.log(transactionData);
+    type simulatedTransactionKey = keyof typeof simulatedTransaction;
+    const minResourceFeeVar = 'minResourceFee' as simulatedTransactionKey;
+    const minResourceFee = simulatedTransaction[minResourceFeeVar];
+    console.log("🚀 ~ main ~ minResourceFee:", minResourceFee)
 
-    // console.log("\nsimulatedTransaction.transactionData._data:")
-    // type sorobanDataBuilderKey = keyof typeof transactionData;
-    // const dataVar = '_data' as sorobanDataBuilderKey;
-    // const _data = transactionData[dataVar]
-    // console.log(_data);
-
-    // console.log("\nsimulatedTransaction.transactionData._data._attributes:")
-    // type childStructKey = keyof typeof _data;
-    // const attributesVar = '_attributes' as childStructKey;
-    // const _attributes = _data[attributesVar];
-    // console.log(_attributes);
-
-    // console.log("\nsimulatedTransaction.transactionData._data._attributes.resourceFee:")
-    // type attributesKey = keyof typeof _attributes;
-    // const resourceFeeVar = 'resourceFee' as attributesKey;
-    // const resourceFee = _attributes[resourceFeeVar];
-    // console.log(resourceFee);
-
-    // console.log("\nsimulatedTransaction.transactionData._data._attributes.resourceFee._value:")
-    // type resourceFeeKey = keyof typeof resourceFee;
-    // const valueVar = '_value' as resourceFeeKey;
-    // const _value = resourceFee[valueVar];
-    // console.log(_value);
-
-    
-
-    // preparedTransaction.sign(sourceKeypair);
-    
-    // // server.sendTransaction(transaction).then(result => {
-    // //   console.log("hash:", result.hash);
-    // //   console.log("status:", result.status);
-    // //   console.log("result:", result);
-    // // });
+    type costKey = keyof typeof simulatedTransaction;
+    const costVar = 'cost' as costKey;
+    const cost = simulatedTransaction[costVar];
+    console.log("🚀 ~ main ~ cost:", cost)
 }
 
 main();
