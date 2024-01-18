@@ -52,7 +52,7 @@ From [tdep comments](https://discord.com/channels/897514728459468821/96678867216
 
 65536 / 1636 = 40,05kb... Yes!
 
-**Costs simulations:** From [costs-instance-vector-light.md](costs-instance-vector-light.md) we can see that both the cost of writing and reading the contract.
+**Costs simulations for instance-vector-light:** From [cost-instance-vector-light.md](cost-instance-vector-light.md) we can see that both the cost of writing and reading the contract.
 **Most important:** Every push to any of the vectors increases the value of reading a "non related function" (get_lorem_ipsum) in 46 stroops!
  
 # Situation 2: Instance, vector, heavy
@@ -84,6 +84,11 @@ This proves that the instance LedgerEntry is independent of the contract size!
 
 We can again manage 1636 pushes of a 32 bytes address.
 
+
+**Costs simulations for instance-vector-heavy:** From [cost-instance-vector-heavy.md](cost-instance-vector-heavy.md) we can see that both the cost of writing and reading the contract.
+**Most important:** Every push to any of the vectors increases the value of reading a "non related function" (get_lorem_ipsum) in 48 stroops! (why now is 48 and no 46 as the example before??? don't know....)
+Of course, reading the lorem_impum now is much more expensive that in the case of a small lorem impusm
+
 # Situation 3: Persistent, vector, heavy
 
 In this case, these two vectors will use a persistent storage. So we expect that each of this vector will have the capacity to store up to 64kb of information. We expect the contract to fail when a vector reaches 1636 pushes. We continue using a heavy contract.
@@ -107,6 +112,10 @@ bash src/attack.sh standalone persistent-vector-heavy
 
 And voilà!!! The contract fails endeed when after one vector reaches a total amount of 1636 pushes.
 You can see the complete error message in [error-persistent-vector-heavy.md](error-persistent-vector-heavy.md)
+
+
+**Costs simulations:** From [cost-persistent-vector-heavy.md](cost-persistent-vector-heavy.md) we can see that increasing the amount of storage used by persistent storage DO NOT increases the cost of reading a "non related function"! This s great!
+However, as expected, increasing the size of the vector makes that calling a function that interacts with this vector to increase in cost. See the result doc!!!
 
 # Situation 4: DoS free: Use a Variable DataKey
 In this situation, we avoid the usage of a vector. Instead we'll use a variable DataKey, that will receive a number as an argument. So you can do the same calls, but every time, the Address gets stored in a different persistent storage slot. And the contract do not have a limit of amounts of different persistent storage to store.
