@@ -1,5 +1,5 @@
 # instance-persistent-dos-soroban
-A Repo to replicate a DoS situation when using instance or persistent storage wih Vectors or Mappings in Soroban
+A Repo to replicate a DoS situation when using instance or persistent storage wih Vectors or Mappings in Soroban. We will see DoS results as well as the costs of both writing and reading the contract.
 
 In this repo we will have 4 ways of writing a similar smart contract. From an external point of view, these smart contracts might be the same. Indeed, we wrote the exact same test for all of them!
 
@@ -52,6 +52,9 @@ From [tdep comments](https://discord.com/channels/897514728459468821/96678867216
 
 65536 / 1636 = 40,05kb... Yes!
 
+**Costs simulations:** From [costs-instance-vector-light.md](costs-instance-vector-light.md) we can see that both the cost of writing and reading the contract.
+**Most important:** Every push to any of the vectors increases the value of reading a "non related function" (get_lorem_ipsum) in 46 stroops!
+ 
 # Situation 2: Instance, vector, heavy
 This contract stores information in a **vector** that increases in using **instance** type of storage. But the contract is **very light**.
 

@@ -1,0 +1,61 @@
+```javascript
+ Pushing to VECTOR A, attempt N° 1 
+Contract invocation successful. No error message received.
+               Cost Simulation: functionName: increment_a
+               Cost Simulation: minResourceFee: 360354
+               Cost Simulation: cost: { cpuInsns: '23879042', memBytes: '4111711' }
+              ..
+               Cost Simulation: functionName: get_address_a
+               Cost Simulation: argument: 0
+               Cost Simulation: minResourceFee: 357019
+               Cost Simulation: cost: { cpuInsns: '23863506', memBytes: '4103437' }
+              ..
+               Cost Simulation: functionName: get_lorem_ipsum
+               Cost Simulation: minResourceFee: 376095
+               Cost Simulation: cost: { cpuInsns: '23889913', memBytes: '4231627' }
+ Pushing to VECTOR B, attempt N° 1 
+Contract invocation successful. No error message received.
+               Cost Simulation: functionName: increment_b
+               Cost Simulation: minResourceFee: 360459
+               Cost Simulation: cost: { cpuInsns: '23881097', memBytes: '4113739' }
+              ..
+               Cost Simulation: functionName: get_address_b
+               Cost Simulation: argument: 0
+               Cost Simulation: minResourceFee: 357072
+               Cost Simulation: cost: { cpuInsns: '23864723', memBytes: '4104483' }
+              ..
+               Cost Simulation: functionName: get_lorem_ipsum
+               Cost Simulation: minResourceFee: 376143
+               Cost Simulation: cost: { cpuInsns: '23890642', memBytes: '4232601' }
+ Pushing to VECTOR A, attempt N° 2 
+Contract invocation successful. No error message received.
+               Cost Simulation: functionName: increment_a
+               Cost Simulation: minResourceFee: 360563
+               Cost Simulation: cost: { cpuInsns: '23883152', memBytes: '4115767' }
+              ..
+               Cost Simulation: functionName: get_address_a
+               Cost Simulation: argument: 1
+               Cost Simulation: minResourceFee: 357126
+               Cost Simulation: cost: { cpuInsns: '23865940', memBytes: '4105529' }
+              ..
+               Cost Simulation: functionName: get_lorem_ipsum
+               Cost Simulation: minResourceFee: 376191
+               Cost Simulation: cost: { cpuInsns: '23891371', memBytes: '4233575' }
+ Pushing to VECTOR B, attempt N° 2 
+Contract invocation successful. No error message received.
+               Cost Simulation: functionName: increment_b
+               Cost Simulation: minResourceFee: 360667
+               Cost Simulation: cost: { cpuInsns: '23885207', memBytes: '4117795' }
+              ..
+               Cost Simulation: functionName: get_address_b
+               Cost Simulation: argument: 1
+               Cost Simulation: minResourceFee: 357179
+               Cost Simulation: cost: { cpuInsns: '23867157', memBytes: '4106575' }
+              ..
+               Cost Simulation: functionName: get_lorem_ipsum
+               Cost Simulation: minResourceFee: 376239
+               Cost Simulation: cost: { cpuInsns: '23892100', memBytes: '4234549' }
+...
+...
+
+```

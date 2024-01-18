@@ -35,7 +35,7 @@ echo -e "${RED} ====== ${NC}"
 
 for ((j=1; j<999999999; j++)); do
 
-        echo -e "${GREEN} Pushing the vector $j ${NC} to VECTOR A"
+        echo -e "${GREEN} Pushing to VECTOR A, attempt N° $j ${NC}"
         RESPONSE=$(soroban contract invoke \
         $ARGS \
         --id $CONTRACT_ID \
@@ -54,11 +54,13 @@ for ((j=1; j<999999999; j++)); do
         echo "              .."
         j_minus_1=$((j - 1))
         yarn --silent ts-node /workspace/src/simulateTransaction.ts get_address_a $j_minus_1
+        echo "              .."
+        yarn --silent ts-node /workspace/src/simulateTransaction.ts get_lorem_ipsum
 
 
         fi
 
-        echo -e "${GREEN} Pushing the vector $j ${NC} to VECTOR B"
+        echo -e "${GREEN} Pushing to VECTOR B, attempt N° $j ${NC}"
         RESPONSE=$(soroban contract invoke \
         $ARGS \
         --id $CONTRACT_ID \
@@ -77,6 +79,7 @@ for ((j=1; j<999999999; j++)); do
         echo "              .."
         j_minus_1=$((j - 1))
         yarn --silent ts-node /workspace/src/simulateTransaction.ts get_address_b $j_minus_1
-
+        echo "              .."
+        yarn --silent ts-node /workspace/src/simulateTransaction.ts get_lorem_ipsum
         fi
 done

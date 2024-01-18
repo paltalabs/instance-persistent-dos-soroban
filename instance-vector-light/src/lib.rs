@@ -1,5 +1,5 @@
 #![no_std]
-use soroban_sdk::{contract, contractimpl, symbol_short, Env, Symbol, Vec, Address};
+use soroban_sdk::{contract, contractimpl, symbol_short, Env, Symbol, Vec, Address, String};
 
 const VECTOR_A: Symbol = symbol_short!("VECTOR");
 const VECTOR_B: Symbol = symbol_short!("VECTOR");
@@ -48,6 +48,11 @@ impl InstanceVectorLightContract {
 
         vector.get(n).unwrap()
 
+    }
+
+    pub fn get_lorem_ipsum(env: Env) -> String{
+        const LOREM_IPSUM: &str = "lorem";
+        String::from_str(&env, LOREM_IPSUM)
     }
 }
 
