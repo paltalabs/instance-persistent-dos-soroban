@@ -61,10 +61,17 @@ if !(soroban config identity ls | grep admin 2>&1 >/dev/null); then
   soroban config identity generate admin
 fi
 
+ADMIN_PUBLIC_KEY="$(soroban config identity address admin)"
+ADMIN_PRIVATE_KEY="$(soroban config identity show admin)"
+
+echo " "
+echo " == "
+echo "ADMIN_PUBLIC_KEY: $ADMIN_PUBLIC_KEY"
+echo "ADMIN_PRIVATE_KEY: $ADMIN_PRIVATE_KEY"
+
 echo Fund token-admin account from friendbot
 echo This will fail if the account already exists, but it\' still be fine.
-ADMIN_ADDRESS="$(soroban config identity address admin)"
-curl  -X POST "$FRIENDBOT_URL?addr=$ADMIN_ADDRESS"
+curl  -X POST "$FRIENDBOT_URL?addr=$ADMIN_PUBLIC_KEY"
 
 echo "   "
 echo " "

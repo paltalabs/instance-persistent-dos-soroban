@@ -46,7 +46,11 @@ By doing `ls -alh instance-vector-light/target/wasm32-unknown-unknown/release/in
 
 As we will see in the next Situation, the contract size does not matter, as all the instances type of storages are stored **in a single contract instance LedgerEntry**. And we can prove that this LedgerEntry is independent of the contract size!
 
-Because we managed to store 818*2 = 1636 times a 32bytes address. This means that we managed to store a total amount of 52352 bytes. The LedgerEntry should be of 64kb... what about the rest of the 13184 bytes = 12,8kb?
+Because we managed to store 818*2 = 1636 times a 32bytes address. 
+
+From [tdep comments](https://discord.com/channels/897514728459468821/966788672164855829/1197477008930766918) the amount of bytes to be stored are a bit more than 32 bytes of the addresss. He says that every push should be around 40kb. Because the LedgerEntry space is 64kb, this means that the space is 65536 bytes.
+
+65536 / 1636 = 40,05kb... Yes!
 
 # Situation 2: Instance, vector, heavy
 This contract stores information in a **vector** that increases in using **instance** type of storage. But the contract is **very light**.
@@ -75,7 +79,7 @@ If you see the [error-instance-vector-heavy.md](error-instance-vector-heavy.md) 
 
 This proves that the instance LedgerEntry is independent of the contract size!
 
-But again... why **only** 1636 pushes of a 32 bytes address? 
+We can again manage 1636 pushes of a 32 bytes address.
 
 # Situation 3: Persistent, vector, heavy
 
@@ -98,7 +102,7 @@ cd /workspace
 bash src/attack.sh standalone persistent-vector-heavy
 ```
 
-And voilà!!! The contract fails endeed when after the vector reaches a total amount of 1636 pushes.
+And voilà!!! The contract fails endeed when after one vector reaches a total amount of 1636 pushes.
 You can see the complete error message in [error-persistent-vector-heavy.md](error-persistent-vector-heavy.md)
 
 # Situation 4: DoS free: Use a Variable DataKey
@@ -117,3 +121,7 @@ Let the attack run during the night!
 ```bash
 bash src/attack.sh standalone persistent-variable-datakey-heavy
 ```
+
+I ran this script for a bit than a night, and I managed to reach 16700 
+
+
