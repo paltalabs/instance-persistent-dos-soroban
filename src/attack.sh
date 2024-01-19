@@ -50,12 +50,12 @@ for ((j=1; j<999999999; j++)); do
 
         ## Simulate the costs
 
-        yarn --silent ts-node /workspace/src/simulateTransaction.ts increment_a
+        # yarn --silent ts-node /workspace/src/simulateTransaction.ts increment_a
         echo "              .."
         j_minus_1=$((j - 1))
-        yarn --silent ts-node /workspace/src/simulateTransaction.ts get_address_a $j_minus_1
+        # yarn --silent ts-node /workspace/src/simulateTransaction.ts get_address_a $j_minus_1
         echo "              .."
-        yarn --silent ts-node /workspace/src/simulateTransaction.ts get_lorem_ipsum
+        # yarn --silent ts-node /workspace/src/simulateTransaction.ts get_lorem_ipsum
 
 
         fi
@@ -75,11 +75,11 @@ for ((j=1; j<999999999; j++)); do
 
         ## Simulate the costs
 
-        yarn --silent ts-node /workspace/src/simulateTransaction.ts increment_b
+        # yarn --silent ts-node /workspace/src/simulateTransaction.ts increment_b
         echo "              .."
         j_minus_1=$((j - 1))
-        yarn --silent ts-node /workspace/src/simulateTransaction.ts get_address_b $j_minus_1
+        # yarn --silent ts-node /workspace/src/simulateTransaction.ts get_address_b $j_minus_1
         echo "              .."
-        yarn --silent ts-node /workspace/src/simulateTransaction.ts get_lorem_ipsum
+        # yarn --silent ts-node /workspace/src/simulateTransaction.ts get_lorem_ipsum
         fi
 done
