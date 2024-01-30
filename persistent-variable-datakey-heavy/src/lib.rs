@@ -6,7 +6,7 @@ const COUNTER_B: Symbol = symbol_short!("COUNTER_B");
 
 #[contracttype]
 pub enum DataKey {
-    StoredAddressesA(u32),
+    StoredAddressesA(u32), 
     StoredAddressesB(u32),
 }
 
